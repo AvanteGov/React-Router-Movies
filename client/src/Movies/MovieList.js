@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from "react-router-dom";
 import axios from 'axios';
+import Movie from "./Movie";
 
 const MovieList = props => {
   const [movies, setMovies] = useState([])
+  
+  // gets info from database here on first load of page.
   useEffect(() => {
     const getMovies = () => {
       axios
@@ -28,10 +32,19 @@ const MovieList = props => {
 }
 
 function MovieDetails({ movie }) {
+  // console.log(movie)
   const { title, director, metascore, stars } = movie;
-  return (
+  return (  
     <div className="movie-card">
-      <h2>{title}</h2>
+      {/* Link has to interpolate the id from the match object */}
+      
+      <Link to={`/movies/${movie.id}`} render={(props) => {
+        return <Movie />
+      }}>
+
+      {/* <Link to={`/${movie.id}`}> */}
+        <h2>{title}</h2>
+      </Link>
       <div className="movie-director">
         Director: <em>{director}</em>
       </div>
@@ -45,7 +58,9 @@ function MovieDetails({ movie }) {
           {star}
         </div>
       ))}
-    </div>
+      {/* having trouble rendering the component when the link is pushed */}
+      {/* <Route path="/:id" component={Movie}/> */}
+    </div>  
   );
 }
 
